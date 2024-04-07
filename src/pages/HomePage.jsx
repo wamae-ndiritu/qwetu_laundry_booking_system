@@ -5,7 +5,9 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
-      <h1>Home Page</h1>
+      <div className="h-screen relative homepage">
+        <div className="  absolute top-0 bottom-0 left-0 right-0 overlay"></div>
+      </div>
       <Footer />
     </div>
   );
