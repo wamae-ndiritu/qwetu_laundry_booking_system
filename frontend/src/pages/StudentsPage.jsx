@@ -11,7 +11,7 @@ const StudentsPage = () => {
             placeholder='Search students by ID'
             className='flex-1 py-2 px-4 border focus:outline-violet-500 rounded'
           />
-          <button className='w-1/5 bg-violet-500 text-white rounded py-2'>
+          <button className='w-1/5 bg-orange-600 text-white rounded py-2'>
             Search
           </button>
         </div>

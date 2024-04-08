@@ -26,7 +26,7 @@ const HomePage = () => {
             <p>30</p>
           </span>
         </div>
-        <div className='col-span-1 shadow bg-orange-600 text-white rounded p-4 flex gap-3'>
+        <div className='col-span-1 shadow bg-violet-500 text-white rounded p-4 flex gap-3'>
           <span className=''>
             <DryCleaningIcon style={{ fontSize: "50px" }} />
           </span>
@@ -35,7 +35,7 @@ const HomePage = () => {
             <p>10</p>
           </span>
         </div>
-        <div className='col-span-1 shadow bg-violet-500 text-white rounded p-4 flex gap-3'>
+        <div className='col-span-1 shadow bg-orange-600 text-white rounded p-4 flex gap-3'>
           <span className=''>
             <Face2Icon style={{ fontSize: "50px" }} />
           </span>
@@ -53,11 +53,11 @@ const HomePage = () => {
             placeholder='Search bookings by ID'
             className='flex-1 py-2 px-4 border focus:outline-violet-500 rounded'
           />
-          <button className='w-1/5 bg-violet-500 text-white rounded py-2'>
+          <button className='w-1/5 bg-orange-600 text-white rounded py-2'>
             Search
           </button>
         </div>
-        <button className='bg-violet-500 px-4 py-2 text-white rounded'>
+        <button className='bg-orange-600 px-4 py-2 text-white rounded'>
           Go to Bookings
         </button>
       </div>
