@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import Dashboard from "./pages/Dashboard";
 import Login from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashBoardLayout from "./components/DashBoardLayout";
@@ -15,7 +15,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route element={<DashBoardLayout />}>
-          <Route path='/' element={<HomePage />} />
+          <Route path='/' element={<Dashboard />} />
+          <Route path='/page/:id' element={<Dashboard />} />
           <Route path='/students' element={<StudentsPage />} />
           <Route path='/laundry-services' element={<ServicesPage />} />
           <Route path='/schedules' element={<SchedulesPage />} />
