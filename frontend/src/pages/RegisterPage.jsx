@@ -12,7 +12,7 @@ const RegisterPage = () => {
           </h2>
         </div>
         <form className="bg-white w-2/5 flex flex-col items-center m-auto px-8 py-4  border rounded">
-          <h3 className="text-violet-600 font-semibold text-2xl">Sign Up</h3>
+          <h3 className="text-orange-600 font-semibold text-2xl">Sign Up</h3>
           <div className="w-full flex flex-col">
             <label htmlFor="Full Name" className="py-1">
               Full Name
@@ -56,7 +56,7 @@ const RegisterPage = () => {
               type="password"
               className=" focus:outline-violet-600 py-1 px-4 border"
             />
-            <button className="bg-violet-600 text-white py-2 rounded my-2">
+            <button className="bg-orange-600 text-white py-2 rounded my-2">
               Sign Up
             </button>
             <section className="flex  gap-1 text-violet-600">

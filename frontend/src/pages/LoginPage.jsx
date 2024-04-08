@@ -12,7 +12,7 @@ const Login = () => {
           </h2>
         </div>
         <form className="bg-white w-2/6 flex flex-col items-center mt-5 px-8 py-4  border rounded ">
-          <h3 className="text-violet-600 font-semibold text-2xl">Sign In</h3>
+          <h3 className="text-orange-600 font-semibold text-2xl">Sign In</h3>
           <div className="w-full flex flex-col">
             <label htmlFor="user name" className="py-1">
               User Name
@@ -28,10 +28,10 @@ const Login = () => {
               type="password"
               className=" focus:outline-violet-600 py-1 px-2 border"
             />
-            <button className="bg-violet-600 text-white py-2 rounded my-2">
+            <button className="bg-orange-600 text-white py-2 rounded my-2">
               Sign In
             </button>
-            <section className="flex  gap-1 text-violet-600">
+            <section className="flex gap-1 text-violet-600">
               <p>Don`t have an account?</p>
               <NavLink to="/register" className="underline ">
                 <p>Sign up</p>
