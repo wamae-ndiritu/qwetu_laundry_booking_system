@@ -23,5 +23,6 @@
 }
 
 .overlay {
-  background-color: rgb(79, 70, 229, 0.5);
+  /* background-color: rgb(79, 70, 229, 0.5); */
+  background-color: rgb(249, 115, 22, 0.2);
 }
