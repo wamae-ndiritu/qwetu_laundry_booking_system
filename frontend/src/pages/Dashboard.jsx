@@ -64,84 +64,90 @@ const HomePage = () => {
       <section className='w-full overflow-x-auto my-5'>
         <table className='w-full border'>
           <thead className='border'>
-            <th className='border border-gray-300 px-2 text-left'>ID</th>
-            <th className='border border-gray-300 px-2 text-left'>
+            <th className='border border-gray-300 px-2 py-1 text-left'>ID</th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
               Student Name
             </th>
-            <th className='border border-gray-300 px-2 text-left'>Service</th>
-            <th className='border border-gray-300 px-2 text-left'>Schedule</th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Hostel Name/Location
+            </th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Room No
+            </th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Service
+            </th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Schedule
+            </th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Additional Notes
+            </th>
+            <th className='border border-gray-300 px-2 py-1 text-left'>
+              Status
+            </th>
           </thead>
           <tbody>
             <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>1</td>
+              <td className='border border-gray-300 p-2'>Wamae Ndiritu</td>
+              <td className='border border-gray-300 p-2'>Kilimani Hostels</td>
+              <td className='border border-gray-300 p-2'>RM 1035</td>
+              <td className='border border-gray-300 p-2'>Dry Cleaning</td>
+              <td className='border border-gray-300 p-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>Notes...</td>
+              <td className='border border-gray-300 p-2'>
+                <span className='bg-green-500 px-2 py-1 text-sm rounded text-white'>
+                  Done
+                </span>
+              </td>
             </tr>
             <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>{" "}
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>1</td>
+              <td className='border border-gray-300 p-2'>Wamae Ndiritu</td>
+              <td className='border border-gray-300 p-2'>Kilimani Hostels</td>
+              <td className='border border-gray-300 p-2'>RM 1035</td>
+              <td className='border border-gray-300 p-2'>Dry Cleaning</td>
+              <td className='border border-gray-300 p-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>Notes...</td>
+              <td className='border border-gray-300 p-2'>
+                <span className='bg-red-500 px-2 py-1 text-sm rounded text-white'>
+                  Not Done
+                </span>
+              </td>
             </tr>
             <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>1</td>
+              <td className='border border-gray-300 p-2'>Wamae Ndiritu</td>
+              <td className='border border-gray-300 p-2'>Kilimani Hostels</td>
+              <td className='border border-gray-300 p-2'>RM 1035</td>
+              <td className='border border-gray-300 p-2'>Dry Cleaning</td>
+              <td className='border border-gray-300 p-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>Notes...</td>
+              <td className='border border-gray-300 p-2'>
+                <span className='bg-red-500 px-2 py-1 text-sm rounded text-white'>
+                  Not Done
+                </span>
+              </td>
             </tr>
             <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
-            </tr>
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>Dry Cleaning</td>
-              <td className='border border-gray-300 px-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>1</td>
+              <td className='border border-gray-300 p-2'>Wamae Ndiritu</td>
+              <td className='border border-gray-300 p-2'>Kilimani Hostels</td>
+              <td className='border border-gray-300 p-2'>RM 1035</td>
+              <td className='border border-gray-300 p-2'>Dry Cleaning</td>
+              <td className='border border-gray-300 p-2'>12:30pm - 2:00pm</td>
+              <td className='border border-gray-300 p-2'>Notes...</td>
+              <td className='border border-gray-300 p-2'>
+                <span className='bg-green-500 px-2 py-1 text-sm rounded text-white'>
+                  Done
+                </span>
+              </td>
             </tr>
           </tbody>
         </table>
       </section>
-      <Pagination/>
+      <Pagination />
     </div>
   );
 };
