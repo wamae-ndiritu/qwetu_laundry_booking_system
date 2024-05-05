@@ -40,3 +40,16 @@ class CustomUser(AbstractBaseUser):
     def __str__(self):
         return self.username
 
+
+
+class Service(models.Model):
+    title = models.CharField(max_length=150, unique=True, null=False)
+    description = models.CharField(max_length=255, null=False)
+    rate =  models.FloatField(default=0)
+
+class Schedule(models.Model):
+    start_time = models.TimeField(null=False)
+    end_time = models.TimeField(null=False)
+
+    class Meta:
+        unique_together = (("start_time", "end_time"),)
