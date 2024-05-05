@@ -53,6 +53,15 @@ def login(request):
         return Response({"message": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
 
 
+@api_view(['GET'])
+def get_students(request):
+    """
+    List all students
+    """
+    students = CustomUser.objects.filter(is_staff=False)
+    serializer = CustomUserSerializer(students, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
 @api_view(['DELETE'])
 def delete_user(request, user_id):
     if request.method == 'DELETE':

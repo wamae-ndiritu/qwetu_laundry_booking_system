@@ -15,7 +15,7 @@ const SideBar = () => {
   //   dispatch(logout());
   // };
   return (
-    <div className='bg-white text-black w-48 py-4 border-r'>
+    <div className='bg-slate-100 text-black w-48 py-4 border-r'>
       <div className='w-full border-b px-2 flex flex-col items-center'>
         <img
           src='/qwetu.jpeg'
