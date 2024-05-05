@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser, Service, Schedule
-from .serializers import CustomUserSerializer, ServiceSerializer, ScheduleSerializer
+from .models import CustomUser, Service, Schedule, Booking
+from .serializers import CustomUserSerializer, ServiceSerializer, ScheduleSerializer, BookingSerializer
 
 
 
@@ -141,3 +141,26 @@ def delete_schedule(request, schedule_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     except Schedule.DoesNotExist:
         return Response({"message": "Schedule not found!"}, status=status.HTTP_404_NOT_FOUND)
+
+
+# Bookings
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def book(request):
+    """Book for laundry service
+    """
+    serializer = BookingSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_bookings(request):
+    """
+    List all bookings
+    """
+    bookings = Booking.objects.all()
+    serializer = BookingSerializer(bookings, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
