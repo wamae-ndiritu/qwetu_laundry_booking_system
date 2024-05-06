@@ -64,28 +64,30 @@ const HomePage = () => {
       <section className='w-full overflow-x-auto my-5'>
         <table className='w-full border'>
           <thead className='border'>
-            <th className='border border-gray-300 px-2 py-1 text-left'>ID</th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Student Name
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Hostel Name/Location
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Room No
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Service
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Schedule
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Additional Notes
-            </th>
-            <th className='border border-gray-300 px-2 py-1 text-left'>
-              Status
-            </th>
+            <tr>
+              <th className='border border-gray-300 px-2 py-1 text-left'>ID</th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Student Name
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Hostel Name/Location
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Room No
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Service
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Schedule
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Additional Notes
+              </th>
+              <th className='border border-gray-300 px-2 py-1 text-left'>
+                Status
+              </th>
+            </tr>
           </thead>
           <tbody>
             <tr>

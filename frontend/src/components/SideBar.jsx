@@ -6,14 +6,14 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import DryCleaningIcon from "@mui/icons-material/DryCleaning";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Face2Icon from "@mui/icons-material/Face2";
-// import { useDispatch } from "react-redux";
-// import { logout } from "../../redux/actions/userActions";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/actions/userActions";
 const SideBar = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const handleLogout = () => {
-  //   dispatch(logout());
-  // };
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <div className='bg-slate-100 text-black w-48 py-4 border-r'>
       <div className='w-full border-b px-2 flex flex-col items-center'>
@@ -107,7 +107,7 @@ const SideBar = () => {
           <li className='my-1'>
             <button
               className='flex gap-3 p-2 cursor-pointer hover:bg-orange-600 hover:text-white'
-              // onClick={handleLogout}
+              onClick={handleLogout}
             >
               <LogoutIcon />
               <h6>Logout</h6>

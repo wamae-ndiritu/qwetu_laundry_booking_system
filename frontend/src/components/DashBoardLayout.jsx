@@ -1,14 +1,11 @@
 import { Outlet, Navigate } from "react-router-dom";
 import SideBar from "./SideBar";
 import Navbar from "./Navbar";
+import { useSelector } from "react-redux";
 
 const DashBoardLayout = () => {
-  const userInfo = {
-    token: {
-      access: true,
-    },
-  };
-  if (userInfo?.token?.access) {
+  const { userInfo } = useSelector((state) => state.user);
+  if (userInfo?.token?.access && userInfo?.user?.is_superuser) {
     return (
       <div className='flex h-screen overflow-hidden'>
         <SideBar />
