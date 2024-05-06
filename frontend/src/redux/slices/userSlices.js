@@ -41,8 +41,8 @@ export const userSlice = createSlice({
     },
     updateUserSuccess: (state, action) => {
       state.loading = false;
-      const contact = action.payload.contact;
-      state.userInfo = { ...state.userInfo, contact };
+      const updated_fields = action.payload;
+      state.userInfo = { ...state.userInfo, user: updated_fields };
       state.updated = true;
     },
     deleteUserSuccess: (state) => {
