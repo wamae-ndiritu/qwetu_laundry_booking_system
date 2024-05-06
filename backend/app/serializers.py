@@ -8,13 +8,19 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'full_name', 'email', 'contact', 'is_staff', 'is_active', 'password']
+        fields = ['id', 'username', 'full_name', 'email', 'contact', 'is_staff', 'is_active', 'is_superuser', 'password']
         read_only_fields = ['id'] 
 
     def create(self, validated_data):
         user = CustomUser.objects.create_user(
             **validated_data)
         return user
+    
+    def update(self, instance, validated_data):
+        if 'password' in validated_data:
+            instance.set_password(validated_data['password'])
+            validated_data.pop('password')
+        return super().update(instance, validated_data)
 
 
 class ServiceSerializer(serializers.ModelSerializer):

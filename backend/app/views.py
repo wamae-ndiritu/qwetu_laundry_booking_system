@@ -65,6 +65,21 @@ def get_students(request):
     serializer = CustomUserSerializer(students, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_user(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+    except CustomUser.DoesNotExist:
+        return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CustomUserSerializer(user, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_user(request, user_id):
