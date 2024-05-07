@@ -1,6 +1,23 @@
+import { useEffect } from "react";
 import Pagination from "../components/pagination/Pagination";
+import {useDispatch, useSelector} from "react-redux";
+import { deleteUser, listStudents } from "../redux/actions/userActions";
+import Loading from "../utils/Loading";
+import Message from "../utils/Message";
+import { resetUserState } from "../redux/slices/userSlices";
 
 const StudentsPage = () => {
+  const dispatch = useDispatch();
+
+  const {students, loading, error, deleted} = useSelector((state) => state.user);
+
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
+  }
+
+  useEffect(() => {
+    dispatch(listStudents());
+  }, [dispatch, deleted])
   return (
     <div>
       <div className='w-full mt-3 flex flex-col md:flex-row md:justify-between items-center'>
@@ -17,36 +34,62 @@ const StudentsPage = () => {
         </div>
       </div>
       <section className='w-full overflow-x-auto my-5'>
+        {loading && <Loading />}
+        {error && (
+          <Message onClose={() => dispatch(resetUserState())}>{error}</Message>
+        )}
         <table className='w-full border'>
           <thead className='border'>
-            <th className='border border-gray-300 px-2 text-left'>ID</th>
-            <th className='border border-gray-300 px-2 text-left'>Full Name</th>
-            <th className='border border-gray-300 px-2 text-left'>Email</th>
-            <th className='border border-gray-300 px-2 text-left'>Username</th>
-            <th className='border border-gray-300 px-2 text-left'>Contact</th>
-            <th className='border border-gray-300 px-2 text-left'>
-              No of Bookings
-            </th>
-            <th className='border border-gray-300 px-2 text-left'>Actions</th>
+            <tr>
+              <th className='border border-gray-300 px-2 text-left'>ID</th>
+              <th className='border border-gray-300 px-2 text-left'>
+                Full Name
+              </th>
+              <th className='border border-gray-300 px-2 text-left'>Email</th>
+              <th className='border border-gray-300 px-2 text-left'>
+                Username
+              </th>
+              <th className='border border-gray-300 px-2 text-left'>Contact</th>
+              <th className='border border-gray-300 px-2 text-left'>
+                No of Bookings
+              </th>
+              <th className='border border-gray-300 px-2 text-left'>Actions</th>
+            </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className='border border-gray-300 px-2'>1</td>
-              <td className='border border-gray-300 px-2'>Wamae Ndiritu</td>
-              <td className='border border-gray-300 px-2'>
-                wamaejoseph392@gmail.com
-              </td>
-              <td className='border border-gray-300 px-2'>wamaendiritu</td>
-              <td className='border border-gray-300 px-2'>0740924507</td>
-              <td className='border border-gray-300 px-2 py-2'><span className="bg-violet-500 text-center text-sm text-white py-1 px-4 rounded">0</span></td>
-              <td className='border border-gray-300 px-2'>
-                <button className="bg-red-500 text-white px-1 text-sm rounded">Delete</button>
-              </td>
-            </tr>
+            {
+              students.map((student, index) => {
+                return (
+                  <tr key={student.id}>
+                    <td className='border border-gray-300 px-2'>{index + 1}</td>
+                    <td className='border border-gray-300 px-2'>
+                      {student.full_name}
+                    </td>
+                    <td className='border border-gray-300 px-2'>
+                      {student.email}
+                    </td>
+                    <td className='border border-gray-300 px-2'>
+                      {student.username}
+                    </td>
+                    <td className='border border-gray-300 px-2'>{student.contact}</td>
+                    <td className='border border-gray-300 px-2 py-2'>
+                      <span className='bg-violet-500 text-center text-sm text-white py-1 px-4 rounded'>
+                        0
+                      </span>
+                    </td>
+                    <td className='border border-gray-300 px-2'>
+                      <button className='bg-red-500 text-white px-1 text-sm rounded' onClick={() => handleDelete(student.id)}>
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            }
           </tbody>
         </table>
       </section>
-      <Pagination rootPath="/students" />
+      <Pagination rootPath='/students' />
     </div>
   );
 }

@@ -6,6 +6,7 @@ import {
   deleteUserSuccess,
   updateUserSuccess,
   registerUserSuccess,
+  getStudentsSuccess,
 } from "../slices/userSlices";
 import axios from "redaxios";
 import { BASE_URL } from "../../URL";
@@ -107,6 +108,46 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
 
     await axios.delete(`${BASE_URL}/users/${userId}/delete/`, config);
     dispatch(deleteUserSuccess());
+  } catch (err) {
+    const errMsg =
+      err?.data && err?.data?.length
+        ? err.data[0]?.message
+        : err?.data
+        ? err.data?.message || err.data?.detail
+        : err.statusText;
+    if (
+      errMsg === "Authentication credentials were not provided." ||
+      errMsg === "Given token not valid for any token type"
+    ) {
+      dispatch(logout());
+      dispatch(userActionFail("Your session has expired"));
+    } else {
+      dispatch(userActionFail(errMsg));
+    }
+  }
+};
+
+// Get Students
+export const listStudents = () => async (dispatch, getState) => {
+  try {
+    dispatch(userActionStart());
+
+    const {
+      user: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo?.token?.access}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const { data } = await axios.get(
+      `${BASE_URL}/users/students/`,
+      config
+    );
+    dispatch(getStudentsSuccess(data));
   } catch (err) {
     const errMsg =
       err?.data && err?.data?.length
