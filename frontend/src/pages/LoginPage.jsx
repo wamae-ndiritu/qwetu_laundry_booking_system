@@ -28,6 +28,8 @@ const Login = () => {
   useEffect(() => {
     if (userInfo?.user?.is_superuser) {
       navigate("/");
+    }else if (userInfo?.token?.access) {
+      navigate("/my-account")
     }
   }, [navigate, userInfo])
 

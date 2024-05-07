@@ -3,12 +3,20 @@ import SideBar from "./SideBar";
 import Navbar from "./Navbar";
 import { useSelector } from "react-redux";
 
+export const AdminDashboard = () => {
+  const { userInfo } = useSelector((state) => state.user);
+  if (userInfo?.user?.is_superuser) {
+    return <Outlet />;
+  }
+  return <Navigate to='/my-account' />
+}
+
 const DashBoardLayout = () => {
   const { userInfo } = useSelector((state) => state.user);
-  if (userInfo?.token?.access && userInfo?.user?.is_superuser) {
+  if (userInfo?.token?.access) {
     return (
       <div className='flex h-screen overflow-hidden'>
-        <SideBar />
+        <SideBar isAdmin={userInfo?.user?.is_superuser} />
         <div className='flex flex-col flex-1 overflow-y-auto overflow-x-hidden'>
           <Navbar />
           <main>

@@ -11,6 +11,7 @@ const initialState = {
   students: [],
   deleted: false,
   updated: false,
+  created: false,
 };
 
 export const userSlice = createSlice({
@@ -29,6 +30,7 @@ export const userSlice = createSlice({
       state.error = null;
       state.deleted = false;
       state.updated = false;
+      state.created = false;
     },
     userActionFail: (state, action) => {
       state.loading = false;
@@ -38,6 +40,12 @@ export const userSlice = createSlice({
       state.deleted = false;
       state.error = null;
       state.updated = false;
+      state.created = false;
+    },
+    registerUserSuccess: (state, action) => {
+      state.loading = false;
+      state.created = true;
+      state.userInfo = action.payload;
     },
     updateUserSuccess: (state, action) => {
       state.loading = false;
@@ -59,7 +67,8 @@ export const {
   updateUserSuccess,
   deleteUserSuccess,
   clearUserState,
-  resetUserState
+  resetUserState,
+  registerUserSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;

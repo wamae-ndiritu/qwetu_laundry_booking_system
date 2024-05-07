@@ -5,10 +5,31 @@ import {
   clearUserState,
   deleteUserSuccess,
   updateUserSuccess,
+  registerUserSuccess,
 } from "../slices/userSlices";
 import axios from "redaxios";
 import { BASE_URL } from "../../URL";
 
+// Register
+export const register = (userData) => async (dispatch) => {
+  try {
+    dispatch(userActionStart());
+
+    const { data } = await axios.post(`${BASE_URL}/users/register/`, userData);
+
+    dispatch(registerUserSuccess(data));
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (err) {
+    const errMsg = err?.data
+      ? err.data.message
+        ? err.data.message : err.data["email"] || err.data["email"]
+      : err.statusText;
+    dispatch(userActionFail(errMsg));
+  }
+};
+
+
+// Login 
 export const login = (userData) => async (dispatch) => {
   try {
     dispatch(userActionStart());
