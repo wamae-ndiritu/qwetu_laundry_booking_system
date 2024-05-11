@@ -35,7 +35,7 @@ const SideBar = ({isAdmin=false}) => {
                     ? "flex gap-3 p-2 bg-orange-600 text-white"
                     : "flex gap-3 p-2 hover:bg-orange-600 hover:text-white"
                 }
-              >
+              end >
                 <DashboardIcon />
                 <h6>Dashboard</h6>
               </NavLink>
@@ -123,7 +123,7 @@ const SideBar = ({isAdmin=false}) => {
                 isActive
                   ? "flex gap-3 p-2 bg-orange-600 text-white"
                   : "flex gap-3 p-2 hover:bg-orange-600 hover:text-white"
-              }
+              } end
             >
               <DashboardIcon />
               <h6>Dashboard</h6>
