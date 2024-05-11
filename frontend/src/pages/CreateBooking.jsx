@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { listServices } from "../redux/actions/serviceActions";
 import { listSchedules } from "../redux/actions/scheduleActions";
+import { validateObject } from "../utils/helpers";
+import Message from "../utils/Message";
 
 const CreateBooking = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const CreateBooking = () => {
     hostel_name: '',
     room_no: ''
   });
+  const [bookingFormErr, setBookingFormErr] = useState(null);
   const [selectedServices, setSelectedServices] = useState([]);
   const [cartServices, setCartServices] = useState([]);
   const [bookingTotals, setBookingTotals] = useState(0);
@@ -52,8 +55,59 @@ const CreateBooking = () => {
    return time12hr
   };
 
+  const handleBookingSubmit = (e) => {
+    e.preventDefault();
+    setBookingFormErr(null);
+    let bookingData = {}
+    if (bookingForm.pick_up_method !== '' && bookingForm.pick_up_method !== 'delivered'){
+      // If the selected method is not delivery, the hostel and room fields will have no values, we need to clean them not to be sent
+      const obj = {...bookingForm};
+      let newObj = {};
+      for (let key in obj){
+        if (key !== 'hostel_name' && key !== 'room_no'){
+          newObj[key] = obj[key]
+        }
+      }
+      const emptyKey = validateObject(newObj);
+      if (emptyKey) {
+        setBookingFormErr(
+          `${emptyKey} is required! All fields marked with * are required!`
+        );
+        return;
+      }
+      bookingData = {...newObj}
+    }else{
+       const emptyKey = validateObject(bookingForm);
+       if (emptyKey) {
+         setBookingFormErr(
+           "If you choose Items to be delivered, please fill the Hostel Name and Room No fields!"
+         );
+         return;
+       }
+       bookingData = {...bookingForm}
+    }
+    if (selectedServices.length === 0){
+      // no selected service
+      setBookingFormErr("Please select atleast one service to book!");
+      return;
+    }
+    console.log(bookingData)
+  }
+
+  // useEffect(() => {
+  //   if (bookingFormErr){
+  //     setBookingForm({
+  //       date: "",
+  //       schedule: "",
+  //       pick_up_method: "",
+  //       hostel_name: "",
+  //       room_no: "",
+  //     });
+  //   }
+  // }, [bookingFormErr])
+
   useEffect(() => {
-    if (bookingForm.schedule !== '' && cartServices.length > 0){
+    if (bookingForm.schedule !== ''){
       const schedule = schedules.find(
         (schedule) => schedule.id === Number(bookingForm.schedule)
       );
@@ -94,7 +148,15 @@ const CreateBooking = () => {
           Bookings
         </Link>
       </div>
-      <form className='mt-5 border p-4 rounded grid grid-cols-1 md:grid-cols-2 gap-5'>
+      {bookingFormErr && (
+        <Message onClose={() => setBookingFormErr(null)}>
+          {bookingFormErr}
+        </Message>
+      )}
+      <form
+        className='mt-5 border p-4 rounded grid grid-cols-1 md:grid-cols-2 gap-5'
+        onSubmit={handleBookingSubmit}
+      >
         <div className='col-span-1'>
           <div className='flex flex-col mb-2'>
             <label htmlFor='date' className='py-1'>
@@ -220,11 +282,16 @@ const CreateBooking = () => {
                 <td className='border border-gray-300 px-2 py-1'>
                   Estimated Totals
                 </td>
-                <td className='border border-gray-300 px-2 py-1'>{bookingTotals ? bookingTotals : "--"}</td>
+                <td className='border border-gray-300 px-2 py-1'>
+                  {bookingTotals ? bookingTotals : "--"}
+                </td>
               </tr>
             </tbody>
           </table>
-          <button className='w-full my-3 bg-violet-500 text-white px-4 py-2 rounded text-xl'>
+          <button
+            type='submit'
+            className='w-full my-3 bg-violet-500 text-white px-4 py-2 rounded text-xl'
+          >
             Book Now
           </button>
         </div>
