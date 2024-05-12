@@ -70,7 +70,7 @@ class Booking(models.Model):
     amount = models.IntegerField(null=False, default=0)
     pick_up_method = models.CharField(max_length=100, null=True, default=None)
     hostel_name = models.CharField(max_length=100, null=True, default=None)
-    room_no = models.CharField(max_length=50, null=False, default=None)
+    room_no = models.CharField(max_length=50, null=True, default=None)
     date = models.DateField(null=True, default=None)
 
 

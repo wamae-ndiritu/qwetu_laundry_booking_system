@@ -212,10 +212,10 @@ def get_bookings(request):
         bookingItems = BookingItem.objects.filter(booking__id=booking.id)
         booking_items_info = []
         for item in bookingItems:
-            service = Booking.objects.get(id=item.service_id)
+            service = Service.objects.get(id=item.service_id)
             booking_service_serializer = ServiceSerializer(service)
             booking_items_info.append(booking_service_serializer.data)
-        schedule = Schedule.objects.get(id=booking.schedule)
+        schedule = Schedule.objects.get(id=booking.schedule.id)
         schedule_serializer = ScheduleSerializer(schedule)
         bookings_info.append(
             {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})
@@ -235,10 +235,10 @@ def get_user_bookings(request, user_id):
         bookingItems = BookingItem.objects.filter(booking__id=booking.id)
         booking_items_info = []
         for item in bookingItems:
-            service = Booking.objects.get(id=item.service_id)
+            service = Service.objects.get(id=item.service_id)
             booking_service_serializer = ServiceSerializer(service)
             booking_items_info.append(booking_service_serializer.data)
-        schedule = Schedule.objects.get(id=booking.schedule)
+        schedule = Schedule.objects.get(id=booking.schedule.id)
         schedule_serializer = ScheduleSerializer(schedule)
         bookings_info.append(
             {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})

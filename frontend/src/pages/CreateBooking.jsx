@@ -6,11 +6,15 @@ import { listServices } from "../redux/actions/serviceActions";
 import { listSchedules } from "../redux/actions/scheduleActions";
 import { validateObject } from "../utils/helpers";
 import Message from "../utils/Message";
+import { createBooking } from "../redux/actions/bookingActions";
+import { resetBookingState } from "../redux/slices/bookingSlice";
+import Loading from "../utils/Loading";
 
 const CreateBooking = () => {
   const dispatch = useDispatch();
   const {services} = useSelector((state) => state.service);
   const {schedules} = useSelector((state) => state.schedule);
+  const {loading, error, created} = useSelector((state) => state.booking);
 
   const [showHostelInfo, setShowHostelInfo] = useState(false);
   const [bookingForm, setBookingForm] = useState({
@@ -18,9 +22,11 @@ const CreateBooking = () => {
     schedule: '',
     pick_up_method: '',
     hostel_name: '',
-    room_no: ''
+    room_no: '',
   });
+  const [notes, setNotes] = useState('No additional notes');
   const [bookingFormErr, setBookingFormErr] = useState(null);
+  const [bookingSuccess, setBookingSuccess] = useState(null);
   const [selectedServices, setSelectedServices] = useState([]);
   const [cartServices, setCartServices] = useState([]);
   const [bookingTotals, setBookingTotals] = useState(0);
@@ -91,20 +97,33 @@ const CreateBooking = () => {
       setBookingFormErr("Please select atleast one service to book!");
       return;
     }
-    console.log(bookingData)
+    dispatch(
+      createBooking({ ...bookingData, services: selectedServices, notes, amount: bookingTotals })
+    );
   }
 
-  // useEffect(() => {
-  //   if (bookingFormErr){
-  //     setBookingForm({
-  //       date: "",
-  //       schedule: "",
-  //       pick_up_method: "",
-  //       hostel_name: "",
-  //       room_no: "",
-  //     });
-  //   }
-  // }, [bookingFormErr])
+  useEffect(() => {
+    if (error || created){
+      setBookingForm({
+        date: "",
+        schedule: "",
+        pick_up_method: "",
+        hostel_name: "",
+        room_no: "",
+      });
+      setSelectedServices([]);
+      setNotes('No additional notes')
+      setBookingTotals(0)
+    }
+    if (created) {
+      setBookingSuccess('Your services has been booked successfully!');
+      const interval = setInterval(() => {
+        dispatch(resetBookingState());
+      }, 5000)
+
+      return () => clearInterval(interval);
+    }
+  }, [dispatch, error, created])
 
   useEffect(() => {
     if (bookingForm.schedule !== ''){
@@ -148,9 +167,20 @@ const CreateBooking = () => {
           Bookings
         </Link>
       </div>
+      {
+        loading && <Loading />
+      }
       {bookingFormErr && (
         <Message onClose={() => setBookingFormErr(null)}>
           {bookingFormErr}
+        </Message>
+      )}
+      {error && (
+        <Message onClose={() => dispatch(resetBookingState())}>{error}</Message>
+      )}
+      {bookingSuccess && (
+        <Message variant='success' onClose={() => setBookingSuccess(null)}>
+          {bookingSuccess}
         </Message>
       )}
       <form
@@ -267,6 +297,19 @@ const CreateBooking = () => {
               </div>
             );
           })}
+          <div className={`flex flex-col mb-2 `}>
+            <label htmlFor='notes' className='py-1'>
+              Additional Notes
+            </label>
+            <textarea
+              name='notes'
+              rows={2}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className='py-2 text-gray-600 px-2 focus:outline-violet-500 rounded border'
+              id='notes'
+            ></textarea>
+          </div>
           <h6 className='mt-5 font-semibold'>Booking Summary</h6>
           <table className='mt-1 w-full'>
             <thead>
