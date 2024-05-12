@@ -217,8 +217,9 @@ def get_bookings(request):
             booking_items_info.append(booking_service_serializer.data)
         schedule = Schedule.objects.get(id=booking.schedule.id)
         schedule_serializer = ScheduleSerializer(schedule)
+        client = CustomUser.objects.get(id=booking.client.id)
         bookings_info.append(
-            {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})
+            {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data, 'client': client.full_name})
     return Response(bookings_info, status=status.HTTP_200_OK)
 
 # Get User bookings

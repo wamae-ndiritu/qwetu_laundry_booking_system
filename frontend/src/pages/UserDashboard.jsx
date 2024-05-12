@@ -3,6 +3,7 @@ import UserWidgets from "../components/UserWidgets";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { listUserBookings } from "../redux/actions/bookingActions";
+import { convertTime } from "../utils/helpers";
 
 const UserDashboard = () => {
   const dispatch = useDispatch();
@@ -44,8 +45,8 @@ const UserDashboard = () => {
                 <span className='flex flex-col'>
                   <h5 className='text-lg'>Shedule</h5>
                   <h6 className='text-gray-600'>
-                    {booking.date} {booking.schedule.start_time} -{" "}
-                    {booking.schedule.end_time}
+                    {booking.date} {convertTime(booking.schedule.start_time)} -{" "}
+                    {convertTime(booking.schedule.end_time)}
                   </h6>
                 </span>
                 <span className='flex flex-col'>
@@ -81,7 +82,9 @@ const UserDashboard = () => {
                   }`}
                 >
                   <h5 className='text-lg'>Hostel Info</h5>
-                  <h6 className='text-gray-600'>{booking?.hostel_name}, Room {booking?.room_no}</h6>
+                  <h6 className='text-gray-600'>
+                    {booking?.hostel_name}, Room {booking?.room_no}
+                  </h6>
                 </span>
                 <span className='flex flex-col'>
                   <h5 className='text-lg'>Totals</h5>

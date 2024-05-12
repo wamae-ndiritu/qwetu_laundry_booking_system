@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { listServices } from "../redux/actions/serviceActions";
 import { listSchedules } from "../redux/actions/scheduleActions";
-import { validateObject } from "../utils/helpers";
+import { convertTime, validateObject } from "../utils/helpers";
 import Message from "../utils/Message";
 import { createBooking } from "../redux/actions/bookingActions";
 import { resetBookingState } from "../redux/slices/bookingSlice";
@@ -52,14 +52,6 @@ const CreateBooking = () => {
       return { ...prevState, [name]: value };
     })
   }
-
-  const convertTime = (time24hr) => {
-    const [hour, minute, second] = time24hr.split(":").map(Number);
-    let suffix = hour >= 12 ? "PM" : "AM";
-    let hour12 = hour % 12 || 12;
-    let time12hr = `${hour12}:${minute}:${second} ${suffix}`;
-   return time12hr
-  };
 
   const handleBookingSubmit = (e) => {
     e.preventDefault();

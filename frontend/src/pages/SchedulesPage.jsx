@@ -8,6 +8,7 @@ import {
   listSchedules,
 } from "../redux/actions/scheduleActions";
 import { resetScheduleState } from "../redux/slices/scheduleSlices";
+import { convertTime } from "../utils/helpers";
 
 const SchedulesPage = () => {
   const dispatch = useDispatch();
@@ -106,10 +107,10 @@ const SchedulesPage = () => {
                   <tr key={schedule.id}>
                     <td className='border border-gray-300 p-2'>{index + 1}</td>
                     <td className='border border-gray-300 p-2'>
-                      {schedule.start_time}
+                      {convertTime(schedule.start_time)}
                     </td>
                     <td className='border border-gray-300 p-2'>
-                      {schedule.end_time}
+                      {convertTime(schedule.end_time)}
                     </td>
                     <td className='border border-gray-300 p-2'>
                       <button
