@@ -12,6 +12,7 @@ const initialState = {
   deleted: false,
   updated: false,
   created: false,
+  stats: {},
 };
 
 export const userSlice = createSlice({
@@ -60,6 +61,10 @@ export const userSlice = createSlice({
     getStudentsSuccess: (state, action) => {
       state.loading = false;
       state.students = action.payload;
+    },
+    getStatsSuccess: (state, action) => {
+      state.loading = false;
+      state.stats = action.payload;
     }
   },
 });
@@ -74,6 +79,7 @@ export const {
   resetUserState,
   registerUserSuccess,
   getStudentsSuccess,
+  getStatsSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;

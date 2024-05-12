@@ -244,3 +244,29 @@ def get_user_bookings(request, user_id):
         bookings_info.append(
             {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})
     return Response(bookings_info, status=status.HTTP_200_OK)
+
+# Admin Stats
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_stats(request):
+    """
+    Users stats
+    """
+    total_students = CustomUser.objects.filter(is_staff=False).count()
+    total_staff = CustomUser.objects.filter(is_staff=True).count()
+    total_bookings = Booking.objects.count()
+    total_services = Service.objects.count()
+    return Response({"student_count": total_students, "booking_count": total_bookings, "service_count": total_services, 'staff_count': total_staff}, status=status.HTTP_200_OK)
+
+
+# Get User stats
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_stats(request, user_id):
+    """
+    Users stats
+    """
+    total_bookings = Booking.objects.filter(client_id=user_id).count()
+    total_services = Service.objects.count()
+    total_slots = Schedule.objects.count()
+    return Response({"booking_count": total_bookings, "service_count": total_services, 'slot_count': total_slots}, status=status.HTTP_200_OK)

@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/students/', views.get_students),
     path('users/<int:user_id>/update/', views.update_user),
     path('users/<int:user_id>/bookings/', views.get_user_bookings),
+    path('users/<int:user_id>/stats/', views.get_user_stats),
     path('services/create/', views.create_service),
     path('services/', views.get_services),
     path('services/<int:service_id>/delete/', views.delete_service),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('schedules/<int:schedule_id>/delete/', views.delete_schedule),
     path('bookings/new/', views.book),
     path('bookings/', views.get_bookings),
+    path('admin/stats/', views.get_stats),
 ]

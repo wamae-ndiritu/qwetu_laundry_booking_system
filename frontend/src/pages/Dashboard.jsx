@@ -6,16 +6,18 @@ import Pagination from "../components/pagination/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { listBookings } from "../redux/actions/bookingActions";
+import { getStats } from "../redux/actions/userActions";
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const {bookings} = useSelector((state) => state.booking);
+  const {stats} = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(listBookings());
+    dispatch(getStats());
   }, [dispatch])
 
-  console.log(bookings)
   return (
     <div>
       <section className='w-full grid grid-cols-1 md:grid-cols-4 gap-3'>
@@ -25,7 +27,7 @@ const HomePage = () => {
           </span>
           <span>
             <h4 className='text-xl'>Total Students</h4>
-            <p>2000</p>
+            <p>{stats?.student_count}</p>
           </span>
         </div>
         <div className='col-span-1 shadow bg-orange-600 text-white rounded p-4 flex gap-3'>
@@ -34,7 +36,7 @@ const HomePage = () => {
           </span>
           <span>
             <h4 className='text-xl'>Total Bookings</h4>
-            <p>30</p>
+            <p>{stats?.booking_count}</p>
           </span>
         </div>
         <div className='col-span-1 shadow bg-violet-500 text-white rounded p-4 flex gap-3'>
@@ -43,7 +45,7 @@ const HomePage = () => {
           </span>
           <span>
             <h4>Total Services</h4>
-            <p>10</p>
+            <p>{stats?.service_count}</p>
           </span>
         </div>
         <div className='col-span-1 shadow bg-orange-600 text-white rounded p-4 flex gap-3'>
@@ -52,7 +54,7 @@ const HomePage = () => {
           </span>
           <span>
             <h4>Total Staff</h4>
-            <p>8</p>
+            <p>{stats?.staff_count}</p>
           </span>
         </div>
       </section>
