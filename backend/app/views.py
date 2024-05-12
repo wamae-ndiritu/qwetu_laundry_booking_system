@@ -205,6 +205,37 @@ def get_bookings(request):
     """
     List all bookings
     """
+    query_params = request.query_params
+    search_id = query_params.get('search_id')
+    if search_id:
+        bookings_info = []
+        try:
+            bookings = []
+            booking = Booking.objects.get(id=int(search_id))
+            bookingItems = BookingItem.objects.filter(booking__id=booking.id)
+            services_info = []
+            for item in bookingItems:
+                service = Service.objects.get(id=item.service.id)
+                service_serializer = ServiceSerializer(service)
+                services_info.append(service_serializer.data)
+            booking_info = {
+                'id': booking.id,
+                'client': booking.client.full_name,
+                'schedule': {
+                    'id': booking.schedule.id,
+                    'start_time': booking.schedule.start_time,
+                    'end_time': booking.schedule.end_time
+                },
+                'pick_up_method': booking.pick_up_method,
+                'notes': booking.notes,
+                'hostel_name': booking.hostel_name,
+                'room_no': booking.room_no,
+                'services': services_info
+            }
+            bookings.append(booking_info)
+            return Response(bookings, status=status.HTTP_200_OK)
+        except Booking.DoesNotExist:
+            return Response({"message": "No matching booking!"}, status=status.HTTP_404_NOT_FOUND)
     bookings = Booking.objects.all()
     bookings_info = []
     for booking in bookings:

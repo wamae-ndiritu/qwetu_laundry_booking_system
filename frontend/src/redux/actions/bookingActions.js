@@ -44,7 +44,7 @@ export const createBooking = (bookingInfo) => async (dispatch, getState) => {
 
 
 // List all bookings
-export const listBookings = () => async (dispatch, getState) => {
+export const listBookings = (searchId="") => async (dispatch, getState) => {
   try {
     dispatch(bookingActionStart());
 
@@ -59,7 +59,7 @@ export const listBookings = () => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.get(`${BASE_URL}/bookings/`, config);
+    const {data} = await axios.get(`${BASE_URL}/bookings/?search_id=${searchId}`, config);
     dispatch(getBookingSuccess(data));
   } catch (err) {
     const errMsg =
