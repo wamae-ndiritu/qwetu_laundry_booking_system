@@ -164,7 +164,18 @@ def delete_schedule(request, schedule_id):
 def book(request):
     """Book for laundry service
     """
-    serializer = BookingSerializer(data=request.data)
+    user = request.user
+    booking_data = {
+        'client': user.id,
+        'schedule': int(request.data.get('schedule')),
+        'date': request.data.get('date'),
+        'amount': request.data.get('amount'),
+        'notes': request.data.get('notes', 'No additional notes'),
+        'hostel_name': request.data.get('hostel_name'),
+        'room_no': request.data.get('room_no'),
+        'pick_up_method': request.data.get('pick_up_method')
+    }
+    serializer = BookingSerializer(data=booking_data)
     if serializer.is_valid():
         booking = serializer.save()
         services = request.data.get('services', [])
@@ -187,6 +198,7 @@ def book(request):
         return Response(status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+# Get all bookings
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_bookings(request):
@@ -203,5 +215,31 @@ def get_bookings(request):
             service = Booking.objects.get(id=item.service_id)
             booking_service_serializer = ServiceSerializer(service)
             booking_items_info.append(booking_service_serializer.data)
-        bookings_info.append({**serializer.data, 'services': booking_items_info})
+        schedule = Schedule.objects.get(id=booking.schedule)
+        schedule_serializer = ScheduleSerializer(schedule)
+        bookings_info.append(
+            {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})
+    return Response(bookings_info, status=status.HTTP_200_OK)
+
+# Get User bookings
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_bookings(request, user_id):
+    """
+    List User bookings
+    """
+    bookings = Booking.objects.filter(client__id=user_id)
+    bookings_info = []
+    for booking in bookings:
+        serializer = BookingSerializer(booking)
+        bookingItems = BookingItem.objects.filter(booking__id=booking.id)
+        booking_items_info = []
+        for item in bookingItems:
+            service = Booking.objects.get(id=item.service_id)
+            booking_service_serializer = ServiceSerializer(service)
+            booking_items_info.append(booking_service_serializer.data)
+        schedule = Schedule.objects.get(id=booking.schedule)
+        schedule_serializer = ScheduleSerializer(schedule)
+        bookings_info.append(
+            {**serializer.data, 'services': booking_items_info, 'schedule': schedule_serializer.data})
     return Response(bookings_info, status=status.HTTP_200_OK)

@@ -66,8 +66,8 @@ class Schedule(models.Model):
 class Booking(models.Model):
     client = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
-    notes = models.TextField(null=True)
-    amount = models.BooleanField(null=False, default=0)
+    notes = models.TextField(null=True, default='No additional notes')
+    amount = models.IntegerField(null=False, default=0)
     pick_up_method = models.CharField(max_length=100, null=True, default=None)
     hostel_name = models.CharField(max_length=100, null=True, default=None)
     room_no = models.CharField(max_length=50, null=False, default=None)
@@ -76,4 +76,4 @@ class Booking(models.Model):
 
 class BookingItem(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)
+    booking = models.ForeignKey(Booking, on_delete=models.CASCADE)
