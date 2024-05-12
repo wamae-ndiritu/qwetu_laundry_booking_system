@@ -8,6 +8,7 @@ import {
   registerUserSuccess,
   getStudentsSuccess,
   getStatsSuccess,
+  getStaffsSuccess,
 } from "../slices/userSlices";
 import axios from "redaxios";
 import { BASE_URL } from "../../URL";
@@ -129,7 +130,7 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
 };
 
 // Get Students
-export const listStudents = () => async (dispatch, getState) => {
+export const listUsers = (type, searchId="") => async (dispatch, getState) => {
   try {
     dispatch(userActionStart());
 
@@ -144,11 +145,16 @@ export const listStudents = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(
-      `${BASE_URL}/users/students/`,
-      config
-    );
-    dispatch(getStudentsSuccess(data));
+    if (type === 'students'){
+      const { data } = await axios.get(`${BASE_URL}/users/students/?search_id=${searchId}`, config);
+      dispatch(getStudentsSuccess(data));
+    } else if (type === 'staffs'){
+      const { data } = await axios.get(
+        `${BASE_URL}/users/staffs/?search_id=${searchId}`,
+        config
+      );
+      dispatch(getStaffsSuccess(data))
+    }
   } catch (err) {
     const errMsg =
       err?.data && err?.data?.length

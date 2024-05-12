@@ -5,6 +5,7 @@ urlpatterns = [
     path('users/register/', views.create_user),
     path('users/login/', views.login),
     path('users/students/', views.get_students),
+    path('users/staffs/', views.get_staffs),
     path('users/<int:user_id>/update/', views.update_user),
     path('users/<int:user_id>/bookings/', views.get_user_bookings),
     path('users/<int:user_id>/stats/', views.get_user_stats),

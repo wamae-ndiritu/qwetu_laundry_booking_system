@@ -55,16 +55,51 @@ def login(request):
         return Response({"message": "User not found!"}, status=status.HTTP_404_NOT_FOUND)
 
 
+# Get Students
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_students(request):
     """
     List all students
     """
+    query_params = request.query_params
+    search_id = query_params.get('search_id')
+    if search_id:
+        try:
+            users = []
+            user = CustomUser.objects.get(id=int(search_id), is_staff=False)
+            serializer = CustomUserSerializer(user)
+            users.append(serializer.data)
+            return Response(users, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({"message": "No student matching!"}, status=status.HTTP_404_NOT_FOUND)
     students = CustomUser.objects.filter(is_staff=False)
     serializer = CustomUserSerializer(students, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+# Get staffs
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_staffs(request):
+    """
+    List all staffss
+    """
+    query_params = request.query_params
+    search_id = query_params.get('search_id')
+    if search_id:
+        try:
+            users = []
+            user = CustomUser.objects.get(id=int(search_id), is_staff=True)
+            serializer = CustomUserSerializer(user)
+            users.append(serializer.data)
+            return Response(users, status=status.HTTP_200_OK)
+        except CustomUser.DoesNotExist:
+            return Response({"message": "No staff matching!"}, status=status.HTTP_404_NOT_FOUND)
+    students = CustomUser.objects.filter(is_staff=True)
+    serializer = CustomUserSerializer(students, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])

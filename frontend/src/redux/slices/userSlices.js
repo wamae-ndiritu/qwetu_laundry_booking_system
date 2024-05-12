@@ -9,6 +9,7 @@ const initialState = {
   error: null,
   userInfo: userInfoFromLocalStorage,
   students: [],
+  staffs: [],
   deleted: false,
   updated: false,
   created: false,
@@ -62,6 +63,10 @@ export const userSlice = createSlice({
       state.loading = false;
       state.students = action.payload;
     },
+    getStaffsSuccess: (state, action) => {
+      state.loading = false;
+      state.staffs = action.payload;
+    },
     getStatsSuccess: (state, action) => {
       state.loading = false;
       state.stats = action.payload;
@@ -79,7 +84,8 @@ export const {
   resetUserState,
   registerUserSuccess,
   getStudentsSuccess,
-  getStatsSuccess
+  getStatsSuccess,
+  getStaffsSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -10,7 +10,7 @@ const Message = ({ variant = "error", onClose, children }) => {
       }`}
     >
       <p>{children}</p>
-      <button onClick={onClose}>
+      <button type="button" onClick={onClose}>
         <CloseIcon />
       </button>
     </span>
