@@ -115,6 +115,20 @@ def update_user(request, user_id):
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# Make user a staff
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def make_user_staff(request, user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        user.is_staff = True
+        user.save()
+        return Response(status=status.HTTP_200_OK)
+    except CustomUser.DoesNotExist:
+        return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_user(request, user_id):

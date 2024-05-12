@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import Pagination from "../components/pagination/Pagination";
 import {useDispatch, useSelector} from "react-redux";
-import { deleteUser, listUsers } from "../redux/actions/userActions";
+import { deleteUser, listUsers, upgradeToStaff } from "../redux/actions/userActions";
 import Loading from "../utils/Loading";
 import Message from "../utils/Message";
 import { resetUserState } from "../redux/slices/userSlices";
 
 const StudentsPage = () => {
   const dispatch = useDispatch();
-  const {students, loading, error, deleted} = useSelector((state) => state.user);
+  const {students, loading, error, deleted, updated} = useSelector((state) => state.user);
 
   const [searchId, setSearchId] = useState("");
 
   const handleDelete = (id) => {
     dispatch(deleteUser(id));
+  }
+
+  const handleMakeStaff = (id) => {
+    dispatch(upgradeToStaff(id))
   }
 
   const handleSearchUserSubmit = (e) => {
@@ -23,7 +27,7 @@ const StudentsPage = () => {
 
   useEffect(() => {
     dispatch(listUsers('students'));
-  }, [dispatch, deleted])
+  }, [dispatch, deleted, updated])
   return (
     <div>
       <div className='w-full mt-3 flex flex-col md:flex-row md:justify-between items-center'>
@@ -89,7 +93,9 @@ const StudentsPage = () => {
                 return (
                   <tr key={student.id}>
                     <td className='border border-gray-300 px-2'>{index + 1}</td>
-                    <td className='border border-gray-300 px-2'>{student.id}</td>
+                    <td className='border border-gray-300 px-2'>
+                      {student.id}
+                    </td>
                     <td className='border border-gray-300 px-2'>
                       {student.full_name}
                     </td>
@@ -104,10 +110,16 @@ const StudentsPage = () => {
                     </td>
                     <td className='border border-gray-300 px-2'>
                       <button
-                        className='bg-red-500 text-white px-1 text-sm rounded'
+                        className='bg-red-500 text-white px-2 py-1 text-sm rounded'
                         onClick={() => handleDelete(student.id)}
                       >
                         Delete
+                      </button>
+                      <button
+                        className='ml-3 bg-violet-300 text-violet-600 px-2 py-1 text-sm rounded'
+                        onClick={() => handleMakeStaff(student.id)}
+                      >
+                        Make Staff
                       </button>
                     </td>
                   </tr>

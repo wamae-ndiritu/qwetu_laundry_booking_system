@@ -9,6 +9,7 @@ import {
   getStudentsSuccess,
   getStatsSuccess,
   getStaffsSuccess,
+  updgradeToStaffSuccess,
 } from "../slices/userSlices";
 import axios from "redaxios";
 import { BASE_URL } from "../../URL";
@@ -25,14 +26,14 @@ export const register = (userData) => async (dispatch) => {
   } catch (err) {
     const errMsg = err?.data
       ? err.data.message
-        ? err.data.message : err.data["email"] || err.data["email"]
+        ? err.data.message
+        : err.data["email"] || err.data["email"]
       : err.statusText;
     dispatch(userActionFail(errMsg));
   }
 };
 
-
-// Login 
+// Login
 export const login = (userData) => async (dispatch) => {
   try {
     dispatch(userActionStart());
@@ -52,7 +53,6 @@ export const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
 };
 
-
 // Update user
 export const updateUser = (userId, form) => async (dispatch, getState) => {
   try {
@@ -69,7 +69,11 @@ export const updateUser = (userId, form) => async (dispatch, getState) => {
       },
     };
 
-    const {data} = await axios.patch(`${BASE_URL}/users/${userId}/update/`, form, config);
+    const { data } = await axios.patch(
+      `${BASE_URL}/users/${userId}/update/`,
+      form,
+      config
+    );
     dispatch(updateUserSuccess(data));
   } catch (err) {
     const errMsg =
@@ -90,7 +94,42 @@ export const updateUser = (userId, form) => async (dispatch, getState) => {
   }
 };
 
+// Update user to be staff
+export const upgradeToStaff = (userId) => async (dispatch, getState) => {
+  try {
+    dispatch(userActionStart());
 
+    const {
+      user: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo?.token?.access}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    await axios.put(`${BASE_URL}/users/${userId}/make-staff/`, {}, config);
+    dispatch(updgradeToStaffSuccess());
+  } catch (err) {
+    const errMsg =
+      err?.data && err?.data?.length
+        ? err.data[0]?.message
+        : err?.data
+        ? err.data?.message || err.data?.detail
+        : err.statusText;
+    if (
+      errMsg === "Authentication credentials were not provided." ||
+      errMsg === "Given token not valid for any token type"
+    ) {
+      dispatch(logout());
+      dispatch(userActionFail("Your session has expired"));
+    } else {
+      dispatch(userActionFail(errMsg));
+    }
+  }
+};
 
 // Delete user
 export const deleteUser = (userId) => async (dispatch, getState) => {
@@ -130,91 +169,101 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
 };
 
 // Get Students
-export const listUsers = (type, searchId="") => async (dispatch, getState) => {
-  try {
-    dispatch(userActionStart());
+export const listUsers =
+  (type, searchId = "") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(userActionStart());
 
-    const {
-      user: { userInfo },
-    } = getState();
+      const {
+        user: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo?.token?.access}`,
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token?.access}`,
+          "Content-Type": "application/json",
+        },
+      };
 
-    if (type === 'students'){
-      const { data } = await axios.get(`${BASE_URL}/users/students/?search_id=${searchId}`, config);
-      dispatch(getStudentsSuccess(data));
-    } else if (type === 'staffs'){
-      const { data } = await axios.get(
-        `${BASE_URL}/users/staffs/?search_id=${searchId}`,
-        config
-      );
-      dispatch(getStaffsSuccess(data))
+      if (type === "students") {
+        const { data } = await axios.get(
+          `${BASE_URL}/users/students/?search_id=${searchId}`,
+          config
+        );
+        dispatch(getStudentsSuccess(data));
+      } else if (type === "staffs") {
+        const { data } = await axios.get(
+          `${BASE_URL}/users/staffs/?search_id=${searchId}`,
+          config
+        );
+        dispatch(getStaffsSuccess(data));
+      }
+    } catch (err) {
+      const errMsg =
+        err?.data && err?.data?.length
+          ? err.data[0]?.message
+          : err?.data
+          ? err.data?.message || err.data?.detail
+          : err.statusText;
+      if (
+        errMsg === "Authentication credentials were not provided." ||
+        errMsg === "Given token not valid for any token type"
+      ) {
+        dispatch(logout());
+        dispatch(userActionFail("Your session has expired"));
+      } else {
+        dispatch(userActionFail(errMsg));
+      }
     }
-  } catch (err) {
-    const errMsg =
-      err?.data && err?.data?.length
-        ? err.data[0]?.message
-        : err?.data
-        ? err.data?.message || err.data?.detail
-        : err.statusText;
-    if (
-      errMsg === "Authentication credentials were not provided." ||
-      errMsg === "Given token not valid for any token type"
-    ) {
-      dispatch(logout());
-      dispatch(userActionFail("Your session has expired"));
-    } else {
-      dispatch(userActionFail(errMsg));
-    }
-  }
-};
+  };
 
 // Get Stats based on the user, staff/student
-export const getStats = (userType="staff") => async (dispatch, getState) => {
-  try {
-    dispatch(userActionStart());
+export const getStats =
+  (userType = "staff") =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(userActionStart());
 
-    const {
-      user: { userInfo },
-    } = getState();
+      const {
+        user: { userInfo },
+      } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo?.token?.access}`,
-        "Content-Type": "application/json",
-      },
-    };
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo?.token?.access}`,
+          "Content-Type": "application/json",
+        },
+      };
 
-    let stats;
+      let stats;
 
-    if (userType === 'staff'){
-      const { data } = await axios.get(`${BASE_URL}/admin/stats/`, config);
-      stats = data
-    } else if (userType === 'user'){
-      const { data } = await axios.get(`${BASE_URL}/users/${userInfo?.user?.id}/stats/`, config);
-      stats = data;
+      if (userType === "staff") {
+        const { data } = await axios.get(`${BASE_URL}/admin/stats/`, config);
+        stats = data;
+      } else if (userType === "user") {
+        const { data } = await axios.get(
+          `${BASE_URL}/users/${userInfo?.user?.id}/stats/`,
+          config
+        );
+        stats = data;
+      }
+      dispatch(getStatsSuccess(stats));
+    } catch (err) {
+      const errMsg =
+        err?.data && err?.data?.length
+          ? err.data[0]?.message
+          : err?.data
+          ? err.data?.message || err.data?.detail
+          : err.statusText;
+      if (
+        errMsg === "Authentication credentials were not provided." ||
+        errMsg === "Given token not valid for any token type"
+      ) {
+        dispatch(logout());
+        dispatch(userActionFail("Your session has expired"));
+      } else {
+        dispatch(userActionFail(errMsg));
+      }
     }
-    dispatch(getStatsSuccess(stats));
-  } catch (err) {
-    const errMsg =
-      err?.data && err?.data?.length
-        ? err.data[0]?.message
-        : err?.data
-        ? err.data?.message || err.data?.detail
-        : err.statusText;
-    if (
-      errMsg === "Authentication credentials were not provided." ||
-      errMsg === "Given token not valid for any token type"
-    ) {
-      dispatch(logout());
-      dispatch(userActionFail("Your session has expired"));
-    } else {
-      dispatch(userActionFail(errMsg));
-    }
-  }
-};
+  };

@@ -55,6 +55,10 @@ export const userSlice = createSlice({
       state.userInfo = { ...state.userInfo, user: updated_fields };
       state.updated = true;
     },
+    updgradeToStaffSuccess: (state) => {
+      state.loading = false;
+      state.updated = true;
+    },
     deleteUserSuccess: (state) => {
         state.loading = false;
         state.deleted = true;
@@ -85,7 +89,8 @@ export const {
   registerUserSuccess,
   getStudentsSuccess,
   getStatsSuccess,
-  getStaffsSuccess
+  getStaffsSuccess,
+  updgradeToStaffSuccess
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -7,6 +7,7 @@ urlpatterns = [
     path('users/students/', views.get_students),
     path('users/staffs/', views.get_staffs),
     path('users/<int:user_id>/update/', views.update_user),
+    path('users/<int:user_id>/make-staff/', views.make_user_staff),
     path('users/<int:user_id>/bookings/', views.get_user_bookings),
     path('users/<int:user_id>/stats/', views.get_user_stats),
     path('services/create/', views.create_service),
