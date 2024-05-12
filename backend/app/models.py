@@ -61,13 +61,19 @@ class Schedule(models.Model):
 
     class Meta:
         unique_together = (("start_time", "end_time"),)
+    
 
 class Booking(models.Model):
     client = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    time = models.ForeignKey(Schedule, on_delete=models.CASCADE)
-    hostel = models.CharField(max_length=100, null=False)
-    room = models.CharField(max_length=50, null=False)
-    notes = models.CharField(max_length=255, null=True)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    notes = models.TextField(null=True)
     amount = models.BooleanField(null=False, default=0)
+    pick_up_method = models.CharField(max_length=100, null=True, default=None)
+    hostel_name = models.CharField(max_length=100, null=True, default=None)
+    room_no = models.CharField(max_length=50, null=False, default=None)
+    date = models.DateField(null=True, default=None)
 
+
+class BookingItem(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE)

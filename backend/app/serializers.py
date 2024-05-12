@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CustomUser, Service, Schedule, Booking
+from .models import CustomUser, Service, Schedule, Booking, BookingItem
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -38,4 +38,9 @@ class ScheduleSerializer(serializers.ModelSerializer):
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ['id', 'client', 'service', 'schedule', 'hostel', 'room', 'notes', 'amount']
+        fields = ['id', 'client', 'schedule', 'hostel_name', 'room_no', 'pick_up_method', 'notes', 'amount', 'date']
+
+class BookingItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookingItem
+        fields  = ['id', 'service', 'booking']

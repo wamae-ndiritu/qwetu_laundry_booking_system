@@ -12,4 +12,5 @@ urlpatterns = [
     path('schedules/', views.get_schedules),
     path('schedules/create/', views.create_schedule),
     path('schedules/<int:schedule_id>/delete/', views.delete_schedule),
+    path('bookings/new/', views.book),
 ]

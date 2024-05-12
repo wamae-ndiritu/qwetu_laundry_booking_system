@@ -3,8 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import CustomUser, Service, Schedule, Booking
-from .serializers import CustomUserSerializer, ServiceSerializer, ScheduleSerializer, BookingSerializer
+from .models import CustomUser, Service, Schedule, Booking, BookingItem
+from .serializers import CustomUserSerializer, ServiceSerializer, ScheduleSerializer, BookingSerializer, BookingItemSerializer
 
 
 
@@ -166,8 +166,25 @@ def book(request):
     """
     serializer = BookingSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        booking = serializer.save()
+        services = request.data.get('services', [])
+        for serviceId in services:
+            try:
+                service = Service.objects.get(id=serviceId)
+                booking_item_info = {
+                    'booking': booking.id,
+                    'service': service.id
+                }
+                booking_serializer = BookingItemSerializer(data=booking_item_info)
+                if booking_serializer.is_valid():
+                    booking_serializer.save()
+                else:
+                    booking.delete()
+                    return Response(booking_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except Service.DoesNotExist:
+                booking.delete()
+                return Response({"message": "Service with the given service ID not found!"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
@@ -177,5 +194,14 @@ def get_bookings(request):
     List all bookings
     """
     bookings = Booking.objects.all()
-    serializer = BookingSerializer(bookings, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    bookings_info = []
+    for booking in bookings:
+        serializer = BookingSerializer(booking)
+        bookingItems = BookingItem.objects.filter(booking__id=booking.id)
+        booking_items_info = []
+        for item in bookingItems:
+            service = Booking.objects.get(id=item.service_id)
+            booking_service_serializer = ServiceSerializer(service)
+            booking_items_info.append(booking_service_serializer.data)
+        bookings_info.append({**serializer.data, 'services': booking_items_info})
+    return Response(bookings_info, status=status.HTTP_200_OK)
